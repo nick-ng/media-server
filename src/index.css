@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-white text-black dark:bg-gray-800 dark:text-gray-200;
+  }
+
+  a {
+    @apply text-blue-700 underline dark:text-blue-300;
+  }
+
+  summary {
+    @apply cursor-pointer select-none underline;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  input,
+  select {
+    @apply my-0.5 rounded border border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-800;
+  }
+
+  select {
+    @apply pl-1;
+  }
+
+  input[type="number"] {
+    @apply text-right;
+  }
+
+  .button-default {
+    @apply inline-block rounded border border-gray-600 bg-white px-2 py-2 dark:border-gray-300 dark:bg-gray-800;
+  }
+
+  .border-default {
+    @apply border border-gray-300 dark:border-gray-600;
+  }
+}
