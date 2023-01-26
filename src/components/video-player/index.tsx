@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { useOptions } from "../../hooks/options-context";
@@ -13,39 +13,39 @@ export default function VideoPlayer() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const resizeTimeoutRef = useRef<number | null>(null);
 
+  const onResize = useCallback(() => {
+    if (typeof resizeTimeoutRef.current === "number") {
+      clearTimeout(resizeTimeoutRef.current);
+    }
+
+    resizeTimeoutRef.current = setTimeout(() => {
+      if (
+        containerRef.current?.offsetWidth &&
+        containerRef.current?.offsetHeight &&
+        videoRef.current?.videoHeight &&
+        videoRef.current?.videoWidth
+      ) {
+        const aspectRatio =
+          videoRef.current?.videoWidth / videoRef.current?.videoHeight;
+
+        const width1 = containerRef.current.offsetWidth;
+        const height1 = width1 / aspectRatio;
+
+        const height2 = containerRef.current.offsetHeight;
+        const width2 = aspectRatio * height2;
+
+        setDimensions({
+          width: Math.min(width1, width2),
+          height: Math.min(height1, height2),
+        });
+      }
+    }, 200);
+  }, [setDimensions]);
+
   const { filename } = params;
   const { watchedVideos, volume } = options;
 
   useEffect(() => {
-    const onResize = () => {
-      if (typeof resizeTimeoutRef.current === "number") {
-        clearTimeout(resizeTimeoutRef.current);
-      }
-
-      resizeTimeoutRef.current = setTimeout(() => {
-        if (
-          containerRef.current?.offsetWidth &&
-          containerRef.current?.offsetHeight &&
-          videoRef.current?.videoHeight &&
-          videoRef.current?.videoWidth
-        ) {
-          const aspectRatio =
-            videoRef.current?.videoWidth / videoRef.current?.videoHeight;
-
-          const width1 = containerRef.current.offsetWidth;
-          const height1 = width1 / aspectRatio;
-
-          const height2 = containerRef.current.offsetHeight;
-          const width2 = aspectRatio * height2;
-
-          setDimensions({
-            width: Math.min(width1, width2),
-            height: Math.min(height1, height2),
-          });
-        }
-      }, 200);
-    };
-
     window.addEventListener("resize", onResize);
 
     const onKeyPress = (e: KeyboardEvent) => {
@@ -97,6 +97,7 @@ export default function VideoPlayer() {
           onLoadedData={(e) => {
             if (videoRef.current) {
               videoRef.current.volume = volume;
+              onResize();
             }
           }}
           controls
