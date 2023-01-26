@@ -16,3 +16,10 @@ Put `.mp4` or video files compatible with your target browser(s) in `./media`.
 1. `./build.sh`
 2. `touch users.json` and add users
 3. `./serve.sh`
+
+## ToDo
+
+- [ ] Download link for videos
+- [ ] More keyboard shortcuts
+  - [ ] Volume
+  - [ ] Seek?
