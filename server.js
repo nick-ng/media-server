@@ -8,25 +8,6 @@ import path from "path";
 import http from "http";
 import cors from "cors";
 
-const usernameAndPasswords = Object.entries(process.env).reduce(
-  (prev, curr) => {
-    const [key, value] = curr;
-    if (key.match(/^USERNAME\d+$/)) {
-      const n = key.replace("USERNAME", "");
-
-      const username = value;
-      const password = process.env[`PASSWORD${n}`];
-
-      return {
-        ...prev,
-        [username]: password,
-      };
-    }
-    return prev;
-  },
-  {}
-);
-
 const app = express();
 const server = http.createServer(app);
 
@@ -44,7 +25,20 @@ app.use(
 app.use(compression());
 app.use(express.json());
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
+  let usernameAndPasswords = {};
+
+  try {
+    const tempBuf = await fs.readFile(
+      path.resolve(process.cwd(), "users.json")
+    );
+
+    usernameAndPasswords = JSON.parse(tempBuf.toString());
+  } catch (e) {
+    res.status(500).send("Users not configured.");
+    return;
+  }
+
   if (
     !req.headers.authorization ||
     !req.headers.authorization.startsWith("Basic ")
@@ -66,15 +60,16 @@ app.use((req, res, next) => {
   const [username, password] = usernamePassword.split(":");
 
   if (
-    !usernameAndPasswords[username] ||
-    usernameAndPasswords[username] !== password
+    usernameAndPasswords[username] &&
+    usernameAndPasswords[username] === password
   ) {
-    res.set("WWW-Authenticate", "Basic");
-    res.sendStatus(401);
+    next();
     return;
   }
 
-  next();
+  res.set("WWW-Authenticate", "Basic");
+  res.sendStatus(401);
+  return;
 });
 
 app.get("/media", async (_req, res, next) => {

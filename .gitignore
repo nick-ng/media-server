@@ -1,5 +1,6 @@
 media/*
 !media/README.md
+users.json
 
 # Logs
 logs

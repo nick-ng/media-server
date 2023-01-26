@@ -1,0 +1,11 @@
+
+node_modules
+dist
+media
+.env
+.gitignore
+.prettier
+docker-compose.yml
+Dockerfile
+README.md
+users.json

@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  media-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    restart: always
+    ports:
+      - "${PORT}:8080"
+    volumes:
+      - ./media:/usr/src/app/media
+      - type: bind
+        source: ./users.json
+        target: /usr/src/app/users.json

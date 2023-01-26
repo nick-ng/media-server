@@ -13,7 +13,7 @@ export default function List({ className, videos, onMarkWatched }: ListProps) {
       {videos.map((v) => (
         <li
           key={v}
-          className="flex items-center justify-start rounded-lg p-1 odd:bg-gray-100 even:bg-gray-300"
+          className="flex items-center justify-start rounded-lg p-1 odd:bg-gray-100 even:bg-gray-300 dark:odd:bg-gray-700 dark:even:bg-gray-500"
         >
           <Link to={`/player/${encodeURIComponent(v)}`}>{v}</Link>
           <div className="grow" />
