@@ -43,7 +43,7 @@
   }
 
   .button-default {
-    @apply inline-block rounded border border-gray-600 bg-white px-2 py-2 dark:border-gray-300 dark:bg-gray-800;
+    @apply inline-block rounded border border-gray-600 bg-white p-2 dark:border-gray-300 dark:bg-gray-800;
   }
 
   .border-default {

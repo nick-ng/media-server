@@ -8,6 +8,8 @@ import path from "path";
 import http from "http";
 import cors from "cors";
 
+import { walkDir } from "./utils.js";
+
 const app = express();
 const server = http.createServer(app);
 
@@ -72,10 +74,17 @@ app.use(async (req, res, next) => {
   return;
 });
 
-app.get("/media", async (_req, res, next) => {
-  const fileList = await fs.readdir(path.resolve(process.cwd(), "media"));
-
-  res.json(fileList.filter((f) => !["README.md"].includes(f)));
+app.get("/media", async (req, res) => {
+  switch (req.query.version) {
+    case "2":
+      const result = await walkDir(path.resolve(process.cwd(), "media"));
+      res.json(result);
+      return;
+    default:
+      const fileList = await fs.readdir(path.resolve(process.cwd(), "media"));
+      res.json(fileList.filter((f) => !["README.md"].includes(f)));
+      return;
+  }
 });
 
 // serve static files
