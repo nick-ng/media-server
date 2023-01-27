@@ -15,6 +15,9 @@ export default function VideoList() {
     Math.floor(Math.random() * 1000000000).toString()
   );
   const [flatVideos, setFlatVideos] = useState<File[]>([]);
+  const newVideos = flatVideos.filter(
+    (v) => !watchedVideos.includes(v.fullPath)
+  );
 
   useEffect(() => {
     (async () => {
@@ -37,26 +40,26 @@ export default function VideoList() {
 
   return (
     <div className="mx-2">
-      <details open>
-        <summary className="button-default">
-          <span className="text-2xl">New Videos</span>{" "}
-          <span>Click to expand/collapse</span>
-        </summary>
-        <div>
-          <List
-            className="text-lg"
-            videos={flatVideos.filter(
-              (v) => !watchedVideos.includes(v.fullPath)
-            )}
-            onMarkWatched={(v) => {
-              const tempWatchedVideos = new Set(watchedVideos);
-              tempWatchedVideos.add(v);
-              setOptions({ watchedVideos: [...tempWatchedVideos] });
-            }}
-          />
-        </div>
-      </details>
-      <div className="my-1 flex items-center justify-start">
+      {newVideos.length > 0 && (
+        <details className="mb-1" open>
+          <summary className="button-default">
+            <span className="text-2xl">New Videos</span>{" "}
+            <span>Click to expand/collapse</span>
+          </summary>
+          <div>
+            <List
+              className="text-lg"
+              videos={newVideos}
+              onMarkWatched={(v) => {
+                const tempWatchedVideos = new Set(watchedVideos);
+                tempWatchedVideos.add(v);
+                setOptions({ watchedVideos: [...tempWatchedVideos] });
+              }}
+            />
+          </div>
+        </details>
+      )}
+      <div className="flex items-center justify-start">
         <h2>All Videos</h2>
         <button
           className="ml-3 rounded border border-gray-600 bg-white px-2 dark:border-gray-300 dark:bg-gray-800"
