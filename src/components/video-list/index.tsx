@@ -11,6 +11,9 @@ export default function VideoList() {
   const { watchedVideos } = options;
 
   const [videos, setVideos] = useState<Directory["contents"]>([]);
+  const [elementKey, setElementKey] = useState(
+    Math.floor(Math.random() * 1000000000).toString()
+  );
   const [flatVideos, setFlatVideos] = useState<File[]>([]);
 
   useEffect(() => {
@@ -34,9 +37,12 @@ export default function VideoList() {
 
   return (
     <div className="mx-2">
-      <details>
-        <summary className="text-2xl">New Videos</summary>
-        <div className="mt-1">
+      <details open>
+        <summary className="button-default">
+          <span className="text-2xl">New Videos</span>{" "}
+          <span>Click to expand/collapse</span>
+        </summary>
+        <div>
           <List
             className="text-lg"
             videos={flatVideos.filter(
@@ -50,8 +56,18 @@ export default function VideoList() {
           />
         </div>
       </details>
-      <h2>All Videos</h2>
-      <List videos={videos} />
+      <div className="my-1 flex items-center justify-start">
+        <h2>All Videos</h2>
+        <button
+          className="ml-3 rounded border border-gray-600 bg-white px-2 dark:border-gray-300 dark:bg-gray-800"
+          onClick={() => {
+            setElementKey(Math.floor(Math.random() * 1000000000).toString());
+          }}
+        >
+          Collapse Directories
+        </button>
+      </div>
+      <List key={elementKey} videos={videos} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import type { Directory } from "./schemas";
 
 interface ListProps {
   className?: string;
+  thisClassName?: string;
   videos: Directory["contents"];
   hideList?: string[];
   showList?: string[];
@@ -13,9 +14,14 @@ interface ListProps {
 const componentClassName =
   "border border-gray-600 flex items-center justify-start rounded-lg p-1 odd:bg-gray-100 even:bg-gray-300 dark:odd:bg-gray-700 dark:even:bg-gray-500";
 
-export default function List({ className, videos, onMarkWatched }: ListProps) {
+export default function List({
+  className,
+  thisClassName,
+  videos,
+  onMarkWatched,
+}: ListProps) {
   return (
-    <div className={`${className} inline-block`}>
+    <div className={`${className || ""} ${thisClassName || ""} inline-block`}>
       {videos.length === 0 && <div>Nothing here.</div>}
       {videos.map((v) => {
         if (v.type === "file") {
@@ -53,14 +59,13 @@ export default function List({ className, videos, onMarkWatched }: ListProps) {
 
         return (
           <details key={fullPath} className={componentClassName}>
-            <summary className="flex items-center justify-start">
-              <span className="capitalize">{dirname}</span>
+            <summary className="flex items-center justify-start no-underline">
+              <span className="capitalize underline">{dirname}</span>
               <div className="grow" />
-              <div className="button-default ml-3 no-underline">
-                Expand Directory
-              </div>
+              <div className="button-default ml-3">Expand/Collapse</div>
             </summary>
             <List
+              thisClassName="mt-1"
               className={className}
               videos={contents}
               onMarkWatched={onMarkWatched}
