@@ -32,7 +32,7 @@ export default function List({
                 className="px-1"
                 to={`/player/${encodeURIComponent(fullPath)}`}
               >
-                {filename}
+                📽️ {filename}
               </Link>
               <div className="grow" />
               <Link
@@ -60,7 +60,7 @@ export default function List({
         return (
           <details key={fullPath} className={componentClassName}>
             <summary className="flex items-center justify-start no-underline">
-              <span className="capitalize underline">{dirname}</span>
+              <span className="capitalize underline">📁 {dirname}</span>
               <div className="grow" />
               <div className="button-default ml-3">Expand/Collapse</div>
             </summary>
