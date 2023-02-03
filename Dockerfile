@@ -15,7 +15,7 @@ COPY package*.json ./
 
 # RUN npm install
 # If you are building your code for production
-RUN npm pkg set scripts.prepare=""
+RUN npm pkg delete scripts.prepare
 RUN npm ci
 
 # Bundle app source
