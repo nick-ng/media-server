@@ -1,4 +1,4 @@
-FROM node:lts-alpine as prod
+FROM node:18-alpine3.16 as prod
 
 ENV NODE_ENV=production
 ENV PORT=8080
@@ -15,7 +15,7 @@ COPY package*.json ./
 
 # RUN npm install
 # If you are building your code for production
-RUN npm set-script prepare ""
+RUN npm pkg set scripts.prepare=""
 RUN npm ci
 
 # Bundle app source
