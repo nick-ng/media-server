@@ -41,9 +41,9 @@ export default function VideoList() {
   return (
     <div className="mx-2">
       {newVideos.length > 0 && (
-        <details className="mb-1" open>
+        <details className="mb-1">
           <summary className="button-default">
-            <span className="text-2xl">New Videos</span>{" "}
+            <span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
             <span>Click to expand/collapse</span>
           </summary>
           <div>
