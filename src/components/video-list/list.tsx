@@ -51,6 +51,13 @@ export default function List({
                   Mark as Watched
                 </button>
               )}
+              <a
+                className="ml-3"
+                href={`media${fullPath}`}
+                download={fullPath.split("/").pop()}
+              >
+                Download
+              </a>
             </div>
           );
         }
