@@ -4,12 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite --host",
+    "start": "node ./server.js",
+    "vite": "vite --host",
     "serve": "node ./server.js",
-    "dev": "npm run build && npm run serve",
+    "dev": "nodemon --legacy-watch --ignore 'src/*' --ignore 'dist/*' ./server.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "watch": "vite build --watch",
+    "prepare": "husky install",
+    "debuffs": "node ./utils/update-debuff-list.js",
+    "addons": "node ./update-addons.js",
+    "force-addons": "node ./update-addons.js force",
+    "test": "node ./test.js"
   },
   "dependencies": {
     "@types/react": "^18.0.26",
@@ -33,6 +39,7 @@
   "devDependencies": {
     "husky": "^8.0.0",
     "jsdom": "^20.0.3",
+    "nodemon": "^2.0.21",
     "prettier": "2.8.1",
     "prettier-plugin-tailwindcss": "^0.2.1",
     "pretty-quick": "^3.1.3"

@@ -5,6 +5,7 @@ import type { Directory, File } from "./schemas";
 import { useOptions } from "../../hooks/options-context";
 import { contentsSchema, fileSchema } from "./schemas";
 import List from "./list";
+import Help from "./help";
 
 export default function VideoList() {
   const { options, setOptions } = useOptions();
@@ -39,38 +40,41 @@ export default function VideoList() {
   }, []);
 
   return (
-    <div className="mx-2">
-      {newVideos.length > 0 && (
-        <details className="mb-1">
-          <summary className="button-default">
-            <span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
-            <span>Click to expand/collapse</span>
-          </summary>
-          <div>
-            <List
-              className="text-lg"
-              videos={newVideos}
-              onMarkWatched={(v) => {
-                const tempWatchedVideos = new Set(watchedVideos);
-                tempWatchedVideos.add(v);
-                setOptions({ watchedVideos: [...tempWatchedVideos] });
-              }}
-            />
-          </div>
-        </details>
-      )}
-      <div className="flex items-center justify-start">
-        <h2>All Videos</h2>
-        <button
-          className="ml-3 rounded border border-gray-600 bg-white px-2 dark:border-gray-300 dark:bg-gray-800"
-          onClick={() => {
-            setElementKey(Math.floor(Math.random() * 1000000000).toString());
-          }}
-        >
-          Collapse Directories
-        </button>
+    <div className="mx-2 flex flex-row justify-between">
+      <div>
+        {newVideos.length > 0 && (
+          <details className="mb-1">
+            <summary className="button-default">
+              <span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
+              <span>Click to expand/collapse</span>
+            </summary>
+            <div>
+              <List
+                className="text-lg"
+                videos={newVideos}
+                onMarkWatched={(v) => {
+                  const tempWatchedVideos = new Set(watchedVideos);
+                  tempWatchedVideos.add(v);
+                  setOptions({ watchedVideos: [...tempWatchedVideos] });
+                }}
+              />
+            </div>
+          </details>
+        )}
+        <div className="flex items-center justify-start">
+          <h2>All Videos</h2>
+          <button
+            className="ml-3 rounded border border-gray-600 bg-white px-2 dark:border-gray-300 dark:bg-gray-800"
+            onClick={() => {
+              setElementKey(Math.floor(Math.random() * 1000000000).toString());
+            }}
+          >
+            Collapse Directories
+          </button>
+        </div>
+        <List key={elementKey} videos={videos} />
       </div>
-      <List key={elementKey} videos={videos} />
+      <Help />
     </div>
   );
 }

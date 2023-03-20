@@ -90,6 +90,9 @@ app.get("/media", async (req, res) => {
 // serve static files
 app.use(express.static(path.resolve(process.cwd(), "dist")));
 app.use("/media", express.static(path.resolve(process.cwd(), "media")));
+app.get("/old", (_req, res) => {
+  res.sendFile(path.resolve(process.cwd(), "dist", "old.html"));
+});
 
 // redirect all other requests to index.html
 app.use((_req, res) => {
