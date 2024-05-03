@@ -1,4 +1,4 @@
-FROM node:18-alpine3.16 as prod
+FROM node:20 as prod
 
 ENV NODE_ENV=production
 ENV PORT=8080
