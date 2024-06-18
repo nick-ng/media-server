@@ -62,8 +62,9 @@ app.use(async (req, res, next) => {
   const [username, password] = usernamePassword.split(":");
 
   if (
-    usernameAndPasswords[username] &&
-    usernameAndPasswords[username] === password
+    usernameAndPasswords?.anonymous === "yes" ||
+    (usernameAndPasswords[username] &&
+      usernameAndPasswords[username] === password)
   ) {
     next();
     return;
