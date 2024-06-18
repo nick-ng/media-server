@@ -41,6 +41,11 @@ app.use(async (req, res, next) => {
     return;
   }
 
+  if (usernameAndPasswords?.anonymous === "yes") {
+    next();
+    return;
+  }
+
   if (
     !req.headers.authorization ||
     !req.headers.authorization.startsWith("Basic ")
@@ -62,9 +67,8 @@ app.use(async (req, res, next) => {
   const [username, password] = usernamePassword.split(":");
 
   if (
-    usernameAndPasswords?.anonymous === "yes" ||
-    (usernameAndPasswords[username] &&
-      usernameAndPasswords[username] === password)
+    usernameAndPasswords[username] &&
+    usernameAndPasswords[username] === password
   ) {
     next();
     return;
