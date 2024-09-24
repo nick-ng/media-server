@@ -235,7 +235,7 @@ export default function VideoPlayer() {
         )}
       </div>
       <div
-        className="flex flex-row justify-between gap-4  px-4 text-center text-white"
+        className="flex flex-row justify-between gap-4 px-4 text-center text-white"
         ref={bottomControlsRef}
       >
         <span>{formatSeconds(currentTime)}</span>
