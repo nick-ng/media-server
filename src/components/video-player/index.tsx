@@ -159,7 +159,11 @@ export default function VideoPlayer() {
               ref={volumeControlRef}
               style={{ writingMode: "vertical-lr", direction: "rtl" }}
               type="range"
-              value={videoRef.current?.volume || 0.5}
+              value={
+                typeof videoRef.current?.volume === "number"
+                  ? videoRef.current?.volume
+                  : 0.5
+              }
               max={1}
               step={0.01}
               onInput={(e) => {
@@ -260,7 +264,11 @@ export default function VideoPlayer() {
             ref={volumeControlRef}
             className="self-center"
             type="range"
-            value={videoRef.current?.volume || 0.5}
+            value={
+              typeof videoRef.current?.volume === "number"
+                ? videoRef.current?.volume
+                : 0.5
+            }
             max={1}
             step={0.01}
             onInput={(e) => {
