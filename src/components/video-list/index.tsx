@@ -64,7 +64,7 @@ export default function VideoList() {
         <div className="flex items-center justify-start">
           <h2>All Videos</h2>
           <button
-            className="ml-3 rounded border border-gray-600 bg-white px-2 dark:border-gray-300 dark:bg-gray-800"
+            className="ml-3 rounded border border-gray-300 bg-gray-800 px-2"
             onClick={() => {
               setElementKey(Math.floor(Math.random() * 1000000000).toString());
             }}

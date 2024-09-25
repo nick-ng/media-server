@@ -12,7 +12,7 @@ interface ListProps {
 }
 
 const componentClassName =
-  "border border-gray-600 flex items-center justify-start rounded-lg p-1 odd:bg-gray-100 even:bg-gray-300 dark:odd:bg-gray-700 dark:even:bg-gray-500";
+  "border border-gray-600 flex items-center justify-start rounded-lg p-1 odd:bg-gray-700 even:bg-gray-500";
 
 export default function List({
   className,
@@ -36,7 +36,7 @@ export default function List({
               </Link>
               <div className="grow" />
               <Link
-                className="button-default ml-3 text-black no-underline dark:text-gray-200"
+                className="button-default ml-3 text-gray-200 no-underline"
                 to={`/player/${encodeURIComponent(fullPath)}`}
               >
                 Watch
