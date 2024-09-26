@@ -96,6 +96,16 @@ export default function VideoPlayer() {
     videoRef.current.currentTime = newTime;
   }, []);
 
+  const volumeChange = useCallback((volumeDelta: number) => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    const newVolume = videoRef.current.volume + volumeDelta;
+
+    videoRef.current.volume = Math.max(0, Math.min(newVolume, 1));
+  }, []);
+
   const { filename } = params;
   const { watchedVideos, volume } = options;
 
@@ -109,9 +119,48 @@ export default function VideoPlayer() {
         } else {
           videoRef.current?.pause();
         }
+
+        return;
+      }
+
+      if (e.key === "j") {
+        onSeek(-10);
+
+        return;
+      }
+
+      if (e.key === "l") {
+        onSeek(10);
+
+        return;
       }
     };
     window.addEventListener("keypress", onKeyPress);
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        volumeChange(-0.05);
+        return;
+      }
+
+      if (e.key === "ArrowUp") {
+        volumeChange(0.05);
+        return;
+      }
+
+      if (e.key === "ArrowLeft") {
+        onSeek(-5);
+
+        return;
+      }
+
+      if (e.key === "ArrowRight") {
+        onSeek(5);
+
+        return;
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
 
     videoRef.current?.addEventListener("seeking", () => {
       videoPropertiesRef.current.seeking = true;
@@ -140,6 +189,7 @@ export default function VideoPlayer() {
 
       window.removeEventListener("resize", onResize);
       window.removeEventListener("keypress", onKeyPress);
+      window.removeEventListener("keydown", onKeyDown);
 
       clearInterval(timerInterval);
     };
@@ -291,9 +341,7 @@ export default function VideoPlayer() {
                 volumeDelta = volumeDelta / 5;
               }
 
-              const newVolume = videoRef.current.volume + volumeDelta;
-
-              videoRef.current.volume = Math.max(0, Math.min(newVolume, 1));
+              volumeChange(volumeDelta);
             }}
           />
           <RightControls
