@@ -13,6 +13,9 @@ const optionsSchema = z.object({
   darkMode: z.enum(["light", "dark", "system"]),
   watchedVideos: z.array(z.string()),
   volume: z.number(),
+  showHelp: z.boolean(),
+  showDownload: z.boolean(),
+  showWatch: z.boolean(),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
@@ -21,6 +24,9 @@ export const defaultOptions: Readonly<Options> = Object.freeze({
   darkMode: "system",
   watchedVideos: [],
   volume: 0.5,
+  showHelp: false,
+  showDownload: true,
+  showWatch: true,
 });
 
 const toggleDarkMode = (darkMode: Options["darkMode"]) => {
