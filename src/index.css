@@ -3,50 +3,50 @@
 @tailwind utilities;
 
 @layer base {
-  html,
-  body,
-  #root {
-    height: 100%;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
 
-  body {
-    @apply bg-gray-800 text-gray-200;
-  }
+	body {
+		@apply bg-gray-800 text-gray-200;
+	}
 
-  a {
-    @apply text-blue-300 underline;
-  }
+	a {
+		@apply text-blue-300 underline;
+	}
 
-  summary {
-    @apply cursor-pointer select-none underline;
-  }
+	summary {
+		@apply cursor-pointer select-none underline;
+	}
 
-  h1 {
-    @apply text-2xl;
-  }
+	h1 {
+		@apply text-2xl;
+	}
 
-  h2 {
-    @apply text-xl;
-  }
+	h2 {
+		@apply text-xl;
+	}
 
-  input,
-  select {
-    @apply my-0.5 rounded border border-gray-600 bg-gray-800;
-  }
+	input,
+	select {
+		@apply my-0.5 rounded border border-gray-600 bg-gray-800;
+	}
 
-  select {
-    @apply pl-1;
-  }
+	select {
+		@apply pl-1;
+	}
 
-  input[type="number"] {
-    @apply text-right;
-  }
+	input[type="number"] {
+		@apply text-right;
+	}
 
-  .button-default {
-    @apply inline-block rounded border border-gray-300 bg-gray-800 p-2;
-  }
+	.button-default {
+		@apply inline-block rounded border border-gray-300 bg-gray-800 p-2;
+	}
 
-  .border-default {
-    @apply border border-gray-600;
-  }
+	.border-default {
+		@apply border border-gray-600;
+	}
 }

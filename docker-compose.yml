@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
       target: prod
     restart: always
+    env:
+      - VITE_PORT=${PORT}
     ports:
       - "${PORT}:8080"
     volumes:
