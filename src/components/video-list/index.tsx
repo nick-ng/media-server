@@ -25,7 +25,9 @@ export default function VideoList() {
 			try {
 				let url = "/media?version=2";
 				if (import.meta.env.VITE_PORT) {
-					url = `${window.location.protocol}//${window.location.hostname}:${import.meta.env.VITE_PORT}/media?version=2`;
+					url = `${window.location.protocol}//${window.location.hostname}:${
+						import.meta.env.VITE_PORT
+					}/media?version=2`;
 				}
 				const res = await fetch(url);
 				const parsedRes = z
@@ -78,9 +80,7 @@ export default function VideoList() {
 				</div>
 				<List key={elementKey} videos={videos} />
 			</div>
-			{showHelp &&
-				<Help />
-			}
+			{showHelp && <Help />}
 		</div>
 	);
 }
