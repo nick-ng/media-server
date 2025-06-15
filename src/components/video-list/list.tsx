@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
-
 import type { Directory } from "./schemas";
+
+import { Link } from "react-router-dom";
+import { useOptions } from "../../hooks/options-context";
 
 interface ListProps {
 	className?: string;
@@ -20,6 +21,8 @@ export default function List({
 	videos,
 	onMarkWatched,
 }: ListProps) {
+	const { options } = useOptions();
+
 	return (
 		<div className={`${className || ""} ${thisClassName || ""} inline-block`}>
 			{videos.length === 0 && <div>Nothing here.</div>}
@@ -35,12 +38,14 @@ export default function List({
 								📽️ {filename}
 							</Link>
 							<div className="grow" />
-							<Link
-								className="button-default ml-3 text-gray-200 no-underline"
-								to={`/player/${encodeURIComponent(fullPath)}`}
-							>
-								Watch
-							</Link>
+							{options.showWatch && (
+								<Link
+									className="button-default ml-3 text-gray-200 no-underline"
+									to={`/player/${encodeURIComponent(fullPath)}`}
+								>
+									Watch
+								</Link>
+							)}
 							{typeof onMarkWatched === "function" && (
 								<button
 									className="button-default ml-3"
@@ -51,13 +56,15 @@ export default function List({
 									Mark as Watched
 								</button>
 							)}
-							<a
-								className="ml-3"
-								href={`media${fullPath}`}
-								download={fullPath.split("/").pop()}
-							>
-								Download
-							</a>
+							{options.showDownload && (
+								<a
+									className="ml-3"
+									href={`media${fullPath}`}
+									download={fullPath.split("/").pop()}
+								>
+									Download
+								</a>
+							)}
 						</div>
 					);
 				}

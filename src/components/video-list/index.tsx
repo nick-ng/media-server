@@ -1,7 +1,8 @@
+import type { Directory, File } from "./schemas";
+
 import z from "zod";
 import { useEffect, useState } from "react";
-
-import type { Directory, File } from "./schemas";
+import { Link } from "react-router-dom";
 import { useOptions } from "../../hooks/options-context";
 import { contentsSchema, fileSchema } from "./schemas";
 import List from "./list";
@@ -48,25 +49,9 @@ export default function VideoList() {
 	return (
 		<div className="mx-2 flex flex-row justify-between">
 			<div>
-				{newVideos.length > 0 && (
-					<details className="mb-1">
-						<summary className="button-default">
-							<span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
-							<span>Click to expand/collapse</span>
-						</summary>
-						<div>
-							<List
-								className="text-lg"
-								videos={newVideos}
-								onMarkWatched={(v) => {
-									const tempWatchedVideos = new Set(watchedVideos);
-									tempWatchedVideos.add(v);
-									setOptions({ watchedVideos: [...tempWatchedVideos] });
-								}}
-							/>
-						</div>
-					</details>
-				)}
+				<div>
+					<Link to="/options">Options</Link>
+				</div>
 				<div className="flex items-center justify-start">
 					<h2>All Videos</h2>
 					<button

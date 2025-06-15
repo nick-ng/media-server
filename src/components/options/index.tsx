@@ -1,4 +1,3 @@
-import {} from "react";
 import { Link } from "react-router-dom";
 import { useOptions } from "../../hooks/options-context";
 
