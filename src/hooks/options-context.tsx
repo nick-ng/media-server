@@ -46,7 +46,7 @@ const OptionsContext = createContext<{
 	setOptions: (newPartialOptions: Partial<Options>) => void;
 }>({
 	options: defaultOptions,
-	setOptions: () => {},
+	setOptions: () => { },
 });
 
 const OptionsContextProvider = ({ children }: { children: ReactNode }) => {

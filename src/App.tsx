@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 
 const VideoList = lazy(() => import("./components/video-list"));
 const VideoPlayer = lazy(() => import("./components/video-player"));
+const Options = lazy(() => import("./components/options"));
 
 const router = createBrowserRouter([
 	{
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
 				There's nothing here. <Link to="/">Go back to the video list</Link>
 			</div>
 		),
+	},
+	{
+		path: "/options",
+		element: <Options />,
 	},
 	{
 		path: "/player/:filename",
