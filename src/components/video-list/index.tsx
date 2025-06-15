@@ -8,73 +8,77 @@ import List from "./list";
 import Help from "./help";
 
 export default function VideoList() {
-  const { options, setOptions } = useOptions();
-  const { watchedVideos } = options;
+	const { options, setOptions } = useOptions();
+	const { showDownload, showHelp, showWatch, watchedVideos } = options;
 
-  const [videos, setVideos] = useState<Directory["contents"]>([]);
-  const [elementKey, setElementKey] = useState(
-    Math.floor(Math.random() * 1000000000).toString()
-  );
-  const [flatVideos, setFlatVideos] = useState<File[]>([]);
-  const newVideos = flatVideos.filter(
-    (v) => !watchedVideos.includes(v.fullPath)
-  );
+	const [videos, setVideos] = useState<Directory["contents"]>([]);
+	const [elementKey, setElementKey] = useState(
+		Math.floor(Math.random() * 1000000000).toString()
+	);
+	const [flatVideos, setFlatVideos] = useState<File[]>([]);
+	const newVideos = flatVideos.filter(
+		(v) => !watchedVideos.includes(v.fullPath)
+	);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/media?version=2");
-        const parsedRes = z
-          .object({
-            output: contentsSchema,
-            flatFiles: z.array(fileSchema),
-          })
-          .parse(await res.json());
+	useEffect(() => {
+		(async () => {
+			try {
+				let url = "/media?version=2";
+				if (import.meta.env.VITE_PORT) {
+					url = `${window.location.protocol}//${window.location.hostname}/media?version=2`;
+				}
+				const res = await fetch("/media?version=2");
+				const parsedRes = z
+					.object({
+						output: contentsSchema,
+						flatFiles: z.array(fileSchema),
+					})
+					.parse(await res.json());
 
-        setVideos(parsedRes.output);
-        setFlatVideos(parsedRes.flatFiles);
-      } catch (e) {
-        console.error("Couldn't get list of videos.", e);
-      }
-    })();
-  }, []);
+				setVideos(parsedRes.output);
+				setFlatVideos(parsedRes.flatFiles);
+			} catch (e) {
+				console.error("Couldn't get list of videos.", e);
+			}
+		})();
+	}, []);
 
-  return (
-    <div className="mx-2 flex flex-row justify-between">
-      <div>
-        {newVideos.length > 0 && (
-          <details className="mb-1">
-            <summary className="button-default">
-              <span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
-              <span>Click to expand/collapse</span>
-            </summary>
-            <div>
-              <List
-                className="text-lg"
-                videos={newVideos}
-                onMarkWatched={(v) => {
-                  const tempWatchedVideos = new Set(watchedVideos);
-                  tempWatchedVideos.add(v);
-                  setOptions({ watchedVideos: [...tempWatchedVideos] });
-                }}
-              />
-            </div>
-          </details>
-        )}
-        <div className="flex items-center justify-start">
-          <h2>All Videos</h2>
-          <button
-            className="ml-3 rounded border border-gray-300 bg-gray-800 px-2"
-            onClick={() => {
-              setElementKey(Math.floor(Math.random() * 1000000000).toString());
-            }}
-          >
-            Collapse Directories
-          </button>
-        </div>
-        <List key={elementKey} videos={videos} />
-      </div>
-      <Help />
-    </div>
-  );
+	return (
+		<div className="mx-2 flex flex-row justify-between">
+			<div>
+				{newVideos.length > 0 && (
+					<details className="mb-1">
+						<summary className="button-default">
+							<span className="text-2xl">New Videos: {newVideos.length}</span>{" "}
+							<span>Click to expand/collapse</span>
+						</summary>
+						<div>
+							<List
+								className="text-lg"
+								videos={newVideos}
+								onMarkWatched={(v) => {
+									const tempWatchedVideos = new Set(watchedVideos);
+									tempWatchedVideos.add(v);
+									setOptions({ watchedVideos: [...tempWatchedVideos] });
+								}}
+							/>
+						</div>
+					</details>
+				)}
+				<div className="flex items-center justify-start">
+					<h2>All Videos</h2>
+					<button
+						className="ml-3 rounded border border-gray-300 bg-gray-800 px-2"
+						onClick={() => {
+							setElementKey(Math.floor(Math.random() * 1000000000).toString());
+						}}
+					>
+						Collapse Directories
+					</button>
+				</div>
+				<List key={elementKey} videos={videos} />
+			</div>
+			<Help />
+		</div>
+	);
 }
