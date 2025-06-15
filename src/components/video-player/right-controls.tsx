@@ -20,6 +20,22 @@ export default function RightControls({
 			<button
 				className="border border-white px-2 py-2 text-white"
 				onClick={() => {
+					if (document.fullscreenElement) {
+						document.exitFullscreen();
+					} else if (containerEl) {
+						containerEl.requestFullscreen();
+					}
+					setTimeout(() => {
+						onResize();
+					}, -1);
+				}}
+			>
+				📽️
+			</button>
+			<div className="h-4"></div>
+			<button
+				className="border border-white px-2 py-2 text-white"
+				onClick={() => {
 					onSeek(10);
 				}}
 			>
@@ -65,21 +81,6 @@ export default function RightControls({
 					⏸️
 				</button>
 			)}
-			<button
-				className="border border-white px-2 py-2 text-white"
-				onClick={() => {
-					if (document.fullscreenElement) {
-						document.exitFullscreen();
-					} else if (containerEl) {
-						containerEl.requestFullscreen();
-					}
-					setTimeout(() => {
-						onResize();
-					}, -1);
-				}}
-			>
-				📽️
-			</button>
 		</div>
 	);
 }

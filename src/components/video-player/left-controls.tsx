@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 type LeftControlsProps = {
 	ref: React.MutableRefObject<HTMLDivElement | null>;
 	onSeek: (deltaSeconds: number) => void | Promise<void>;
@@ -11,6 +12,13 @@ export default function LeftControls({
 }: LeftControlsProps) {
 	return (
 		<div className="flex flex-col justify-center" ref={ref}>
+			<Link
+				className="flex flex-row items-center justify-center border border-white px-2 py-2"
+				to="/"
+			>
+				🔙
+			</Link>
+			<div className="h-4"></div>
 			<button
 				className="border border-white px-2 py-2 text-white"
 				onClick={() => {
