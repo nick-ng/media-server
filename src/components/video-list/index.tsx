@@ -10,16 +10,12 @@ import List from "./list";
 import Help from "./help";
 
 export default function VideoList() {
-	const { options, setOptions } = useOptions();
-	const { showDownload, showHelp, showWatch, watchedVideos } = options;
+	const { options } = useOptions();
+	const { showHelp } = options;
 
 	const [videos, setVideos] = useState<Directory["contents"]>([]);
 	const [elementKey, setElementKey] = useState(
 		Math.floor(Math.random() * 1000000000).toString()
-	);
-	const [flatVideos, setFlatVideos] = useState<File[]>([]);
-	const newVideos = flatVideos.filter(
-		(v) => !watchedVideos.includes(v.fullPath)
 	);
 
 	useEffect(() => {
@@ -35,7 +31,6 @@ export default function VideoList() {
 					.parse(await res.json());
 
 				setVideos(parsedRes.output);
-				setFlatVideos(parsedRes.flatFiles);
 			} catch (e) {
 				console.error("Couldn't get list of videos.", e);
 			}
