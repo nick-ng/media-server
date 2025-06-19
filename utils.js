@@ -1,9 +1,13 @@
 import fs from "node:fs/promises";
 import path from "path";
 
-const ENDS_WITH_BLACKLIST = [".md", ".json"];
+const ENDS_WITH_BLOCKLIST = [".md", ".json"];
 
-export const walkDir = async (startDir, currentDir = "") => {
+export const walkDir = async (
+	startDir,
+	includedExtensions = [],
+	currentDir = ""
+) => {
 	const tempDir = await fs.readdir(startDir);
 
 	const output = [];
@@ -16,7 +20,7 @@ export const walkDir = async (startDir, currentDir = "") => {
 		const fullPath = `${currentDir}/${item}`;
 
 		if (a.isDirectory()) {
-			const temp = await walkDir(itemPath, fullPath);
+			const temp = await walkDir(itemPath, includedExtensions, fullPath);
 			output.push({
 				type: "directory",
 				dirname: item,
@@ -24,7 +28,11 @@ export const walkDir = async (startDir, currentDir = "") => {
 				contents: temp.output,
 			});
 			flatFiles.push(...temp.flatFiles);
-		} else if (ENDS_WITH_BLACKLIST.every((m) => !item.endsWith(m))) {
+		} else if (
+			includedExtensions.length === 0
+				? ENDS_WITH_BLOCKLIST.every((m) => !item.endsWith(m))
+				: includedExtensions.some((extension) => item.endsWith(extension))
+		) {
 			output.push({
 				type: "file",
 				filename: item,

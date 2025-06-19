@@ -110,14 +110,23 @@ app.get("/user-settings", async (_req, res) => {
 
 app.get("/media", async (req, res) => {
 	switch (req.query.version) {
-		case "2":
+		case "3": {
+			const result = await walkDir(path.resolve(process.cwd(), "media"), [
+				".mp4",
+			]);
+			res.json(result);
+			return;
+		}
+		case "2": {
 			const result = await walkDir(path.resolve(process.cwd(), "media"));
 			res.json(result);
 			return;
-		default:
+		}
+		default: {
 			const fileList = await fs.readdir(path.resolve(process.cwd(), "media"));
 			res.json(fileList.filter((f) => !["README.md"].includes(f)));
 			return;
+		}
 	}
 });
 
