@@ -111,9 +111,17 @@ app.get("/user-settings", async (_req, res) => {
 app.get("/media", async (req, res) => {
 	switch (req.query.version) {
 		case "3": {
-			const result = await walkDir(path.resolve(process.cwd(), "media"), [
-				".mp4",
-			]);
+			let extensions = req.query.exts;
+			if (!extensions) {
+				extensions = [".mp4"];
+			} else if (typeof extensions === "string") {
+				extensions = [extensions];
+			}
+
+			const result = await walkDir(
+				path.resolve(process.cwd(), "media"),
+				extensions
+			);
 			res.json(result);
 			return;
 		}

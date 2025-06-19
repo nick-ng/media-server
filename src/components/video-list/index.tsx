@@ -21,7 +21,7 @@ export default function VideoList() {
 	useEffect(() => {
 		(async () => {
 			try {
-				const url = getUrl("/media?version=3");
+				const url = getUrl("/media?version=3&exts=.mp4");
 				const res = await fetch(url);
 				const parsedRes = z
 					.object({
