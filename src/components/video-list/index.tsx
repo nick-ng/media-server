@@ -4,6 +4,7 @@ import z from "zod";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useOptions } from "../../hooks/options-context";
+import { getUrl } from "../../utils";
 import { contentsSchema, fileSchema } from "./schemas";
 import List from "./list";
 import Help from "./help";
@@ -24,12 +25,7 @@ export default function VideoList() {
 	useEffect(() => {
 		(async () => {
 			try {
-				let url = "/media?version=2";
-				if (import.meta.env.VITE_PORT) {
-					url = `${window.location.protocol}//${window.location.hostname}:${
-						import.meta.env.VITE_PORT
-					}/media?version=2`;
-				}
+				const url = getUrl("/media?version=2");
 				const res = await fetch(url);
 				const parsedRes = z
 					.object({

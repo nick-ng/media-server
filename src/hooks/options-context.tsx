@@ -6,6 +6,7 @@ import {
 	useState,
 } from "react";
 import z from "zod";
+import { getUrl, tryCatchPromise } from "../utils";
 
 const OPTIONS_STORE = "MEDIA_SERVER_OPTIONS";
 
@@ -50,22 +51,7 @@ const OptionsContext = createContext<{
 });
 
 const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
-	const savedOptionsString = localStorage.getItem(OPTIONS_STORE);
-	let savedOptions: Partial<Options> = {};
-	if (savedOptionsString) {
-		try {
-			savedOptions = optionsSchema
-				.partial()
-				.parse(JSON.parse(savedOptionsString));
-		} catch (e) {
-			console.error("Invalid saved options", savedOptionsString);
-		}
-	}
-
-	const [options, setOptions] = useState<Options>({
-		...defaultOptions,
-		...savedOptions,
-	});
+	const [options, setOptions] = useState<Options>(defaultOptions);
 
 	useEffect(() => {
 		toggleDarkMode(options.darkMode);
@@ -81,6 +67,32 @@ const OptionsContextProvider = ({ children }: { children: ReactNode }) => {
 		};
 
 		prefersColorSchemeDark.addEventListener("change", toggleCallBack);
+
+		const loadOptions = async () => {
+			const savedOptionsString = localStorage.getItem(OPTIONS_STORE);
+			if (savedOptionsString) {
+				try {
+					const savedOptions = optionsSchema
+						.partial()
+						.parse(JSON.parse(savedOptionsString));
+
+					setOptions((prevOptions) => ({ ...prevOptions, ...savedOptions }));
+				} catch (e) {
+					console.error("Invalid saved options", savedOptionsString);
+				}
+			} else {
+				const url = getUrl("/user-settings");
+				const [userSettings, err] = await tryCatchPromise(
+					fetch(url).then((res) => res.json())
+				);
+				if (err) {
+					console.error("error when loading user options", err);
+				} else {
+					setOptions((prevOptions) => ({ ...prevOptions, ...userSettings }));
+				}
+			}
+		};
+		loadOptions();
 
 		return () => {
 			prefersColorSchemeDark.removeEventListener("change", toggleCallBack);

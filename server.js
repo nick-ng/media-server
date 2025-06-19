@@ -41,15 +41,16 @@ app.use(async (req, res, next) => {
 		return;
 	}
 
-	if (usernameAndPasswords?.anonymous === "yes") {
-		next();
-		return;
-	}
-
 	if (
 		!req.headers.authorization ||
 		!req.headers.authorization.startsWith("Basic ")
 	) {
+		if (usernameAndPasswords?.anonymous === "yes") {
+			res.locals.isAnonymous = true;
+			next();
+			return;
+		}
+
 		res.set("WWW-Authenticate", "Basic");
 		res.sendStatus(401);
 		return;
@@ -66,10 +67,12 @@ app.use(async (req, res, next) => {
 
 	const [username, password] = usernamePassword.split(":");
 
+	res.locals.isAnonymous = false;
 	if (
 		usernameAndPasswords[username] &&
 		usernameAndPasswords[username] === password
 	) {
+		res.locals.username = username;
 		next();
 		return;
 	}
@@ -77,6 +80,32 @@ app.use(async (req, res, next) => {
 	res.set("WWW-Authenticate", "Basic");
 	res.sendStatus(401);
 	return;
+});
+
+app.get("/user-settings", async (_req, res) => {
+	if (res.locals.isAnonymous) {
+		res.json({});
+		return;
+	}
+
+	try {
+		const userSettingsBuf = await fs.readFile(
+			path.resolve(process.cwd(), "user-settings.json")
+		);
+
+		const allUserSettings = JSON.parse(userSettingsBuf.toString());
+		const currentUserSettings = allUserSettings[res.locals.username];
+		if (!currentUserSettings) {
+			res.json({});
+			return;
+		}
+
+		res.json(currentUserSettings);
+		return;
+	} catch (e) {
+		res.status(500).send("User settings not configured.");
+		return;
+	}
 });
 
 app.get("/media", async (req, res) => {
