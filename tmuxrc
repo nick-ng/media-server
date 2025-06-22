@@ -1,0 +1,19 @@
+function tmux-media-server-init () {
+  cd ~/my-gits/media-server
+  MY_SESSION=$(tmux list-sessions | grep "media-server")
+		  if [[ ! $MY_SESSION ]]; then
+		  # create a new session and `-d`etach
+		  tmux new-session -d -s media-server
+		  tmux new-window
+		  tmux new-window
+		  tmux send "npm run dev" Enter
+		  tmux split-window -h
+		  tmux send "npm run watch" Enter
+fi
+
+}
+
+function tmux-media-server() {
+tmux-media-server-init
+tmux attach-session -d -t media-server
+}
