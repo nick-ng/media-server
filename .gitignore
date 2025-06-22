@@ -1,4 +1,5 @@
 media/*
+aaaa/
 !media/README.md
 users.json
 user-settings.json
