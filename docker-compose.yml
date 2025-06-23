@@ -16,3 +16,6 @@ services:
       - type: bind
         source: ./users.json
         target: /usr/src/app/users.json
+      - type: bind
+        source: ./user-settings.json
+        target: /usr/src/app/user-settings.json
