@@ -38,8 +38,8 @@ export default function VideoList() {
 	}, []);
 
 	return (
-		<div className="mx-2 flex flex-row justify-between">
-			<div>
+		<div className="mx-2">
+			<div className="">
 				<div>
 					<Link to="/options">Options</Link>
 				</div>

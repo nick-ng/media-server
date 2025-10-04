@@ -13,7 +13,7 @@ interface ListProps {
 }
 
 const componentClassName =
-	"border border-gray-600 flex items-center justify-start rounded-lg p-1 odd:bg-gray-700 even:bg-gray-500";
+	"border border-gray-600 rounded-lg p-1 odd:bg-gray-700 even:bg-gray-500";
 
 export default function List({
 	className,
@@ -24,13 +24,16 @@ export default function List({
 	const { options } = useOptions();
 
 	return (
-		<div className={`${className || ""} ${thisClassName || ""} inline-block`}>
+		<div className={`${className || ""} ${thisClassName || ""}`}>
 			{videos.length === 0 && <div>Nothing here.</div>}
 			{videos.map((v) => {
 				if (v.type === "file") {
 					const { filename, fullPath } = v;
 					return (
-						<div key={fullPath} className={componentClassName}>
+						<div
+							key={fullPath}
+							className={`${componentClassName} flex flex-row items-center`}
+						>
 							<Link
 								className="px-1"
 								to={`/player/${encodeURIComponent(fullPath)}`}
@@ -74,9 +77,8 @@ export default function List({
 				return (
 					<details key={fullPath} className={componentClassName}>
 						<summary className="flex items-center justify-start no-underline">
-							<span className="capitalize underline">📁 {dirname}</span>
+							<span className="underline">📁 {dirname}</span>
 							<div className="grow" />
-							<div className="button-default ml-3">Expand/Collapse</div>
 						</summary>
 						<List
 							thisClassName="mt-1"
